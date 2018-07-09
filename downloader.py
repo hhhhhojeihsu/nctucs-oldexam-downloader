@@ -24,14 +24,18 @@ def main():
             s.post('https://oldexam.nctucs.tw/login_chk', data=cred)
             resp = s.get('https://oldexam.nctucs.tw/main')
         except:
-            print("Cannot connect. Either the server is down or your password is wrong")
+            print("Cannot connect to server.")
             sys.exit(1)
 
         # Start crawling
         soup = BeautifulSoup(resp.text, 'html5lib')
 
         # Get category lists
-        ul = soup.find(id='left').find_next('ul')
+        try:
+            ul = soup.find(id='left').find_next('ul')
+        except AttributeError:
+            print("Invalid credentials.")
+            sys.exit(1)
         for li in ul.find_all('li'):
             print('- Downloading \'', li.get_text(), '\'')
             os.makedirs(li.get_text())
