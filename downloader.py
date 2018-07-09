@@ -51,7 +51,7 @@ def main():
                     for idx, file in enumerate(file_list):
                         writer.writerow([idx, file['semester'], file['type'], file['instructor'], file['provider'], file['uploader'], file['comment'], file['day']])
                         # Download the file
-                        filename = '-'.join([str(idx), file['semester'], file['instructor'], file['type']])
+                        filename = '-'.join([str(idx).rjust(2, '0'), file['semester'], file['instructor'], file['type']])
                         print('    - Downloading \'', filename, '\'')
                         archive = s.get('https://oldexam.nctucs.tw/down/' + file['eid'], stream=True)
                         with open((filename + os.path.splitext(archive.headers['Content-Disposition'])[1]).replace('";', ''), 'wb') as f:
