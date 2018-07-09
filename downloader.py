@@ -2,10 +2,14 @@
 import requests, os, sys, json, csv, shutil
 from bs4 import BeautifulSoup
 
+# It is suggest that you put your account/password as env variable
+# But you can hard coded them into the file if you want
 cred = {
     'dep': 'cs',
-    'id': os.getenv('USER'),
-    'pw': os.getenv('D_PASS')
+    #'id': os.getenv('USER'),
+    'id': 'YOUR CS ID',
+    #'pw': os.getenv('D_PASS')
+    'pw': 'YOUR CS PW'
 }
 
 def main():
