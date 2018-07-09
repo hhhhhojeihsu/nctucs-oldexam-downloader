@@ -53,7 +53,7 @@ def main():
                 os.makedirs(foldername)
                 os.chdir(foldername)
                 file_list = json.loads(s.post('https://oldexam.nctucs.tw/ajax_show_exam', data={'cid': course['value']}).text)
-                with open('list.csv', 'w', newline='') as csvfile:
+                with open('list.csv', 'w', newline='', encoding='utf-8') as csvfile:
                     writer = csv.writer(csvfile)
                     writer.writerow(['ID', '西元年', '講師', '類型', '提供者', '上傳者', '附註', '上傳日期'])
 
