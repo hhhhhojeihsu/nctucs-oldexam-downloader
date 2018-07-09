@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import requests, os, sys, json, csv, shutil
+import requests, os, sys, json, csv, shutil, re
 from bs4 import BeautifulSoup
 
 # It is suggest that you put your account/password as env variable
@@ -11,6 +11,10 @@ cred = {
     #'pw': os.getenv('D_PASS')
     'pw': 'YOUR CS PW'
 }
+
+# https://gist.github.com/seanh/93666
+def format_filename(s):
+    return re.sub('[^\w\-_\. ]', '_', s)
 
 def main():
 
@@ -42,16 +46,16 @@ def main():
             sys.exit(1)
         for li in ul.find_all('li'):
             print('- Downloading \'', li.get_text(), '\'')
-            os.makedirs(li.get_text())
-            os.chdir(li.get_text())
+            os.makedirs(format_filename(li.get_text()))
+            os.chdir(format_filename(li.get_text()))
 
             # Get course lists
             raw_course = BeautifulSoup(s.post('https://oldexam.nctucs.tw/ajax_show_course', data={'cid': li['value']}).text, 'html5lib')
             for course in raw_course.find_all('li'):
                 print('  - Downloading \'', course.get_text(), '\'')
                 foldername = course.get_text().replace('\t', '')
-                os.makedirs(foldername)
-                os.chdir(foldername)
+                os.makedirs(format_filename(foldername))
+                os.chdir(format_filename(foldername))
                 file_list = json.loads(s.post('https://oldexam.nctucs.tw/ajax_show_exam', data={'cid': course['value']}).text)
                 with open('list.csv', 'w', newline='', encoding='utf-8') as csvfile:
                     writer = csv.writer(csvfile)
