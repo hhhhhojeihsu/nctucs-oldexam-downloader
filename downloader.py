@@ -49,8 +49,9 @@ def main():
             raw_course = BeautifulSoup(s.post('https://oldexam.nctucs.tw/ajax_show_course', data={'cid': li['value']}).text, 'html5lib')
             for course in raw_course.find_all('li'):
                 print('  - Downloading \'', course.get_text(), '\'')
-                os.makedirs(course.get_text())
-                os.chdir(course.get_text())
+                foldername = course.get_text().replace('\t', '')
+                os.makedirs(foldername)
+                os.chdir(foldername)
                 file_list = json.loads(s.post('https://oldexam.nctucs.tw/ajax_show_exam', data={'cid': course['value']}).text)
                 with open('list.csv', 'w', newline='') as csvfile:
                     writer = csv.writer(csvfile)
